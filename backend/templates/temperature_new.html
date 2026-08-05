@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMSAM | Temperature Monitoring</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="brand">
+                <h1 class="brand-name">SMSAM</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">
+                        <span>🏠</span> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('about') }}" class="nav-link">
+                        <span>ℹ️</span> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('analytics') }}" class="nav-link">
+                        <span>📊</span> Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('camera') }}" class="nav-link">
+                        <span>📷</span> Live Cam
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <span>🚪</span> Logout
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="avatar"></div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 0.9rem;">{{ user.name }}</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header animate-fade">
+                <div>
+                    <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Temperature Monitoring</h2>
+                    <p style="color: var(--text-dim);">Live data from DHT22 Precision Sensor</p>
+                </div>
+
+                <!-- Live indicator -->
+                <div class="glass-card" style="padding: 12px 24px; border-radius: 100px; display: flex; align-items: center; gap: 1rem;">
+                    <div id="live-dot" style="width: 10px; height: 10px; border-radius: 50%;
+                         background: var(--success); box-shadow: 0 0 8px var(--success);
+                         transition: background 0.4s;"></div>
+                    <span id="last-updated" style="font-size: 0.8rem; color: var(--text-muted);">Connecting...</span>
+                </div>
+            </header>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <!-- Live Reading Card -->
+                <div class="glass-card animate-fade">
+                    <div class="card-header">
+                        <div class="card-icon">🌡️</div>
+                        <div id="temperature-status" class="status-badge"
+                             style="color: var(--success); font-weight: 700; font-size: 0.8rem;">
+                            CONNECTING
+                        </div>
+                    </div>
+                    <div class="card-value" style="font-size: 4rem;">
+                        <span id="temperature-val">—</span>
+                        <span style="font-size: 2rem; color: var(--text-muted);">°C</span>
+                    </div>
+                    <div class="progress-container" style="height: 12px;">
+                        <div id="temperature-bar" class="progress-bar" style="width: 0%;"></div>
+                    </div>
+                    <p style="margin-top: 1.5rem; color: var(--text-dim);">Real-time ambient temperature tracking.</p>
+
+                    <!-- Timestamp row -->
+                    <div style="margin-top: 1rem; padding-top: 1rem;
+                                border-top: 1px solid var(--border-glass);
+                                display: flex; justify-content: space-between;
+                                align-items: center; font-size: 0.8rem; color: var(--text-muted);">
+                        <span>Last reading</span>
+                        <span id="reading-timestamp">—</span>
+                    </div>
+                </div>
+
+                <!-- Sensor Info Card (unchanged) -->
+                <div class="glass-card animate-fade" style="animation-delay: 0.1s;">
+                    <h3 style="margin-bottom: 1.5rem;">How it Works</h3>
+                    <p style="color: var(--text-dim); line-height: 1.8; margin-bottom: 1rem;">
+                        The <strong>DHT22</strong> sensor measures ambient temperature by sensing
+                        the changes in electrical resistance of a moisture-holding substrate.
+                    </p>
+                    <ul style="list-style: none; color: var(--text-dim); line-height: 2;">
+                        <li>✅ Range: -40°C to 80°C</li>
+                        <li>✅ Accuracy: ±0.5°C</li>
+                        <li>✅ Sampling Rate: 0.5Hz (Every 2 seconds)</li>
+                        <li>✅ Low power consumption (3.3V – 5.5V)</li>
+                    </ul>
+
+                    <!-- Temperature zones -->
+                    <div style="margin-top: 1.5rem; padding-top: 1rem;
+                                border-top: 1px solid var(--border-glass);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted);
+                                    text-transform: uppercase; letter-spacing: 1px;
+                                    margin-bottom: 0.75rem;">Temperature Zones</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+                            <div style="display:flex;align-items:center;gap:0.75rem;">
+                                <span style="width:10px;height:10px;border-radius:50%;background:var(--primary);flex-shrink:0;"></span>
+                                <span style="color:var(--text-dim);">&lt; 18°C — Cold</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:0.75rem;">
+                                <span style="width:10px;height:10px;border-radius:50%;background:var(--success);flex-shrink:0;"></span>
+                                <span style="color:var(--text-dim);">18–28°C — Comfortable</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:0.75rem;">
+                                <span style="width:10px;height:10px;border-radius:50%;background:var(--warning);flex-shrink:0;"></span>
+                                <span style="color:var(--text-dim);">28–35°C — Warm</span>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:0.75rem;">
+                                <span style="width:10px;height:10px;border-radius:50%;background:var(--danger);flex-shrink:0;"></span>
+                                <span style="color:var(--text-dim);">&gt; 35°C — Hot</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Graph Placeholder -->
+            <div class="glass-card animate-fade"
+                 style="margin-top: 1.5rem; animation-delay: 0.2s; height: 300px;
+                        display: flex; align-items: center; justify-content: center;
+                        border: 1px dashed var(--border-glass);">
+                <p style="color: var(--text-muted);">Live Analytics Graph Coming Soon</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- ══════════════════════════════════════════════════
+         TEMPERATURE LIVE POLLING
+         Polls /api/sensor/dht22/latest every 2.5 seconds.
+         Reads only 'temperature' from the shared DHT22 response.
+    ═══════════════════════════════════════════════════════ -->
+    <script>
+    (function () {
+        'use strict';
+
+        const valEl    = document.getElementById('temperature-val');
+        const barEl    = document.getElementById('temperature-bar');
+        const statusEl = document.getElementById('temperature-status');
+        const tsEl     = document.getElementById('reading-timestamp');
+        const updEl    = document.getElementById('last-updated');
+        const dotEl    = document.getElementById('live-dot');
+
+        // DHT22 range: -40 to 80°C. Map to progress bar using 0–50°C as typical display range.
+        const DISPLAY_MIN =  0;
+        const DISPLAY_MAX = 50;
+
+        function getZone(temp) {
+            if (temp < 18) return { text: 'COLD',        color: 'var(--primary)'  };
+            if (temp < 28) return { text: 'COMFORTABLE', color: 'var(--success)'  };
+            if (temp < 35) return { text: 'WARM',        color: 'var(--warning)'  };
+            return               { text: 'HOT',          color: 'var(--danger)'   };
+        }
+
+        function updateUI(data) {
+            const temp  = parseFloat(data.temperature) || 0;
+            const zone  = getZone(temp);
+            const pct   = Math.min(100, Math.max(0,
+                          ((temp - DISPLAY_MIN) / (DISPLAY_MAX - DISPLAY_MIN)) * 100
+                          )).toFixed(1);
+
+            valEl.textContent = temp.toFixed(1);
+
+            barEl.style.width      = pct + '%';
+            barEl.style.background = `linear-gradient(90deg, ${zone.color}, var(--secondary))`;
+
+            statusEl.textContent = zone.text;
+            statusEl.style.color = zone.color;
+
+            const ts = data.timestamp
+                ? new Date(data.timestamp).toLocaleTimeString() : '—';
+            tsEl.textContent  = ts;
+            updEl.textContent = 'Updated ' + ts;
+
+            dotEl.style.background = 'var(--success)';
+            dotEl.style.boxShadow  = '0 0 10px var(--success)';
+        }
+
+        function setOffline(msg) {
+            statusEl.textContent   = 'OFFLINE';
+            statusEl.style.color   = 'var(--danger)';
+            updEl.textContent      = msg || 'No data';
+            dotEl.style.background = 'var(--danger)';
+            dotEl.style.boxShadow  = '0 0 8px var(--danger)';
+        }
+
+        async function fetchLatest() {
+            try {
+                const resp = await fetch('/api/sensor/dht22/latest', {
+                    method: 'GET', headers: { Accept: 'application/json' }, cache: 'no-store'
+                });
+                if (!resp.ok) { setOffline('API error ' + resp.status); return; }
+                const json = await resp.json();
+                if (json.status === 'ok' || json.status === 'no_data') {
+                    updateUI(json.data);
+                } else {
+                    setOffline('Server error');
+                }
+            } catch (e) {
+                setOffline('Cannot reach server');
+            }
+        }
+
+        fetchLatest();
+        setInterval(fetchLatest, 2500);
+    })();
+    </script>
+</body>
+</html>

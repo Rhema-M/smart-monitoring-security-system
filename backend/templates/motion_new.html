@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMSAM | Motion Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="brand">
+                <h1 class="brand-name">SMSAM</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">
+                        <span>🏠</span> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('about') }}" class="nav-link">
+                        <span>ℹ</span> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('analytics') }}" class="nav-link">
+                        <span>📊</span> Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('camera') }}" class="nav-link">
+                        <span>📷</span> Live Cam
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <!-- Fixed: was url_for('login') — corrected to url_for('logout') -->
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <span>🚪</span> Logout
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="avatar"></div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 0.9rem;">{{ user.name }}</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header animate-fade">
+                <div>
+                    <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Motion Detection</h2>
+                    <p style="color: var(--text-dim);">Live security status from PIR Infrared Sensor</p>
+                </div>
+
+                <!-- Live indicator -->
+                <div class="glass-card" style="padding: 12px 24px; border-radius: 100px; display: flex; align-items: center; gap: 1rem;">
+                    <div id="live-dot" style="width: 10px; height: 10px; border-radius: 50%;
+                         background: {% if latest_data and latest_data.motion_detected %}var(--danger){% else %}var(--success){% endif %}; box-shadow: 0 0 8px {% if latest_data and latest_data.motion_detected %}var(--danger){% else %}var(--success){% endif %};
+                         transition: background 0.4s;"></div>
+                    <span id="last-updated" style="font-size: 0.8rem; color: var(--text-muted);">{% if latest_data and latest_data.timestamp %}Updated {{ latest_data.timestamp }}{% else %}Connecting...{% endif %}</span>
+                </div>
+            </header>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <!-- Live Reading Card -->
+                <div id="motion-card" class="glass-card animate-fade" style="{% if latest_data and latest_data.motion_detected %}border-color: rgba(220,38,38,0.5);{% endif %}">
+                    <div class="card-header">
+                        <div class="card-icon">🚨</div>
+                        <div id="motion-status" class="status-badge"
+                             style="color: {% if latest_data and latest_data.motion_detected %}var(--danger){% else %}var(--success){% endif %}; font-weight: 700; font-size: 0.8rem;">
+                            {% if latest_data and latest_data.motion_detected %}ALERT{% else %}CLEAR{% endif %}
+                        </div>
+                    </div>
+                    <div class="card-value" style="font-size: 3.5rem; padding: 1rem 0;">
+                        <span id="motion-val">{% if latest_data and latest_data.motion_detected %}DETECTED{% else %}CLEAR{% endif %}</span>
+                    </div>
+                    <div class="progress-container" style="height: 12px;">
+                        <div id="motion-bar" class="progress-bar" style="width: {% if latest_data and latest_data.motion_detected %}100%{% else %}0%{% endif %}; background: {% if latest_data and latest_data.motion_detected %}linear-gradient(90deg, var(--danger), #f97316){% else %}linear-gradient(90deg, var(--success), var(--primary)){% endif %};"></div>
+                    </div>
+                    <p style="margin-top: 1.5rem; color: var(--text-dim);">Real-time movement detection in range.</p>
+
+                    <!-- Timestamp row -->
+                    <div style="margin-top: 1rem; padding-top: 1rem;
+                                border-top: 1px solid var(--border-glass);
+                                display: flex; justify-content: space-between;
+                                align-items: center; font-size: 0.8rem; color: var(--text-muted);">
+                        <span>Last reading</span>
+                        <span id="reading-timestamp">{% if latest_data and latest_data.timestamp %}{{ latest_data.timestamp }}{% else %}—{% endif %}</span>
+                    </div>
+                </div>
+
+                <!-- Sensor Info Card (unchanged content) -->
+                <div class="glass-card animate-fade" style="animation-delay: 0.1s;">
+                    <h3 style="margin-bottom: 1.5rem;">PIR Technology</h3>
+                    <p style="color: var(--text-dim); line-height: 1.8; margin-bottom: 1rem;">
+                        The <strong>Passive Infrared (PIR)</strong> sensor detects motion by measuring
+                        the infrared light radiating from objects in its field of view.
+                    </p>
+                    <ul style="list-style: none; color: var(--text-dim); line-height: 2;">
+                        <li>✅ Detection Angle: 120 Degrees</li>
+                        <li>✅ Range: Up to 7 Meters</li>
+                        <li>✅ High sensitivity to human body movement</li>
+                        <li>✅ Adjustable delay and sensitivity</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Detection Log Section -->
+            <div class="glass-card animate-fade" style="margin-top: 1.5rem; animation-delay: 0.2s;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1rem;">Recent Detections</h3>
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">LIVE LOG</span>
+                </div>
+                <div id="alert-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                    {% if recent_detections %}
+                        {% for item in recent_detections %}
+                        <div style="padding: 12px 16px; background: rgba(220,38,38,0.06); border: 1px solid rgba(220,38,38,0.2); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
+                            <span style="color:var(--text-main);">🚨 Motion detected</span>
+                            <span style="color:var(--text-muted); font-size:0.75rem;">{{ item.timestamp }}</span>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <p id="no-events-msg" style="color: var(--text-muted); font-size: 0.9rem; {% if recent_detections %}display: none;{% endif %}">
+                    No motion events recorded yet.
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- ══════════════════════════════════════════════════
+         MOTION LIVE POLLING — polls /api/sensor/motion/latest
+         every 2.5 seconds. Detection events logged to the
+         "Recent Detections" list below.
+    ═══════════════════════════════════════════════════════ -->
+    <script>
+    (function () {
+        'use strict';
+
+        const valEl    = document.getElementById('motion-val');
+        const barEl    = document.getElementById('motion-bar');
+        const cardEl   = document.getElementById('motion-card');
+        const statusEl = document.getElementById('motion-status');
+        const tsEl     = document.getElementById('reading-timestamp');
+        const updEl    = document.getElementById('last-updated');
+        const dotEl    = document.getElementById('live-dot');
+        const alertEl  = document.getElementById('alert-list');
+        const noEvtEl  = document.getElementById('no-events-msg');
+
+        let g_lastMotionState = {% if latest_data and latest_data.motion_detected %}true{% else %}false{% endif %};  // track state to log only changes
+
+        function updateUI(data) {
+            const detected = !!data.motion_detected;
+            const ts = data.timestamp
+                ? new Date(data.timestamp).toLocaleTimeString() : '—';
+
+            // Main value display
+            valEl.textContent = detected ? 'DETECTED' : 'CLEAR';
+
+            // Progress bar — full when motion, empty when clear
+            barEl.style.width = detected ? '100%' : '0%';
+            barEl.style.background = detected
+                ? 'linear-gradient(90deg, var(--danger), #f97316)'
+                : 'linear-gradient(90deg, var(--success), var(--primary))';
+
+            // Status badge
+            statusEl.textContent = detected ? 'ALERT' : 'CLEAR';
+            statusEl.style.color = detected ? 'var(--danger)' : 'var(--success)';
+
+            // Card accent on alert
+            cardEl.style.borderColor = detected
+                ? 'rgba(220,38,38,0.5)' : '';
+
+            // Timestamps
+            tsEl.textContent  = ts;
+            updEl.textContent = 'Updated ' + ts;
+
+            // Live dot
+            dotEl.style.background = detected ? 'var(--danger)' : 'var(--success)';
+            dotEl.style.boxShadow  = detected
+                ? '0 0 10px var(--danger)' : '0 0 10px var(--success)';
+
+            // Log only when state changes (avoids duplicate entries)
+            if (g_lastMotionState !== detected) {
+                g_lastMotionState = detected;
+                if (detected) {
+                    addDetectionLog('🚨 Motion detected', ts);
+                }
+            }
+        }
+
+        function addDetectionLog(message, time) {
+            if (noEvtEl) noEvtEl.style.display = 'none';
+
+            const item = document.createElement('div');
+            item.style.cssText = `
+                padding: 12px 16px;
+                background: rgba(220,38,38,0.06);
+                border: 1px solid rgba(220,38,38,0.2);
+                border-radius: 12px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 0.9rem;
+                animation: slideIn 0.3s ease-out;
+            `;
+            item.innerHTML = `
+                <span style="color:var(--text-main);">${message}</span>
+                <span style="color:var(--text-muted); font-size:0.75rem;">${time}</span>
+            `;
+            alertEl.prepend(item);
+
+            // Cap log at 8 entries
+            while (alertEl.children.length > 8) {
+                alertEl.lastChild.remove();
+            }
+        }
+
+        function setOffline(msg) {
+            statusEl.textContent   = 'OFFLINE';
+            statusEl.style.color   = 'var(--danger)';
+            updEl.textContent      = msg || 'No data';
+            dotEl.style.background = 'var(--danger)';
+            dotEl.style.boxShadow  = '0 0 8px var(--danger)';
+        }
+
+        async function fetchLatest() {
+            try {
+                const resp = await fetch('/api/sensor/motion/latest', {
+                    method: 'GET', headers: { Accept: 'application/json' }, cache: 'no-store'
+                });
+                if (!resp.ok) { setOffline('API error ' + resp.status); return; }
+                const json = await resp.json();
+                if (json.status === 'ok' || json.status === 'no_data') {
+                    updateUI(json.data);
+                } else {
+                    setOffline('Server error');
+                }
+            } catch (e) {
+                setOffline('Cannot reach server');
+            }
+        }
+
+        fetchLatest();
+        setInterval(fetchLatest, 2500);
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+SELECT * FROM smsam_database.dht22_data;

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMSAM | About Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="brand">
+                <h1 class="brand-name">SMSAM</h1>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">
+                        <span>🏠</span> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('about') }}" class="nav-link active">
+                        <span>ℹ️</span> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('analytics') }}" class="nav-link">
+                        <span>📊</span> Analytics
+                    </a>
+                </li>
+                {% if 'camera' in user.permissions %}
+                <li class="nav-item">
+                    <a href="{{ url_for('camera') }}" class="nav-link">
+                        <span>📷</span> Live Cam
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <span>🚪</span> Logout
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="avatar"></div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 0.9rem;">{{ user.name }}</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header animate-fade">
+                <div>
+                    <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">About Project</h2>
+                    <p style="color: var(--text-dim);">System overview and technical specifications</p>
+                </div>
+            </header>
+
+            <div class="glass-card animate-fade" style="margin-bottom: 2rem;">
+                <div style="display: flex; gap: 2rem; align-items: center;">
+
+                    <div>
+                        <h3 style="font-size: 2rem; margin-bottom: 1rem;">SMSAM System v1.0</h3>
+                        <p style="color: var(--text-dim); line-height: 1.8;">
+                            An autonomous monitoring and security solution built on the ESP32 ecosystem. 
+                            Designed for real-time environmental tracking and visual surveillance with minimal infrastructure requirements.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="glass-card animate-fade" style="animation-delay: 0.2s;">
+                    <h3 style="margin-bottom: 1rem;">Core Hardware</h3>
+                    <ul style="list-style: none; color: var(--text-dim); line-height: 2;">
+                        <li>🔹 <strong>ESP32:</strong> Central Controller</li>
+                        <li>🔹 <strong>ESP32-CAM:</strong> Video Streamer</li>
+                        <li>🔹 <strong>DHT22:</strong> Temp & Humidity</li>
+                        <li>🔹 <strong>HC-SR04:</strong> Proximity Radar</li>
+                        <li>🔹 <strong>PIR Sensor:</strong> Motion Detection</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card animate-fade" style="animation-delay: 0.3s;">
+                    <h3 style="margin-bottom: 1rem;">Software Stack</h3>
+                    <ul style="list-style: none; color: var(--text-dim); line-height: 2;">
+                        <li>🚀 <strong>Backend:</strong> Python / Flask</li>
+                        <li>🎨 <strong>Frontend:</strong> Vanilla CSS (Premium)</li>
+                        <li>⚙️ <strong>Firmware:</strong> C++ / Arduino IDE</li>
+                        <li>🌐 <strong>Protocol:</strong> HTTP / MJPEG</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="glass-card animate-fade" style="margin-top: 1.5rem; animation-delay: 0.4s;">
+                <h3 style="margin-bottom: 1rem;">Project Objectives</h3>
+                <p style="color: var(--text-dim); line-height: 1.8;">
+                    The primary goal is to demonstrate how low-cost embedded systems can be leveraged to create 
+                    professional-grade monitoring solutions. By integrating various sensors and a live video feed, 
+                    SMSAM provides a comprehensive overview of machine or environment status in real-time.
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMSAM | Proximity Monitoring</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="brand">
+                <h1 class="brand-name">SMSAM</h1>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link">
+                        <span>🏠</span> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('about') }}" class="nav-link">
+                        <span>ℹ</span> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('analytics') }}" class="nav-link">
+                        <span>📊</span> Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('camera') }}" class="nav-link">
+                        <span>📷</span> Live Cam
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <span>🚪</span> Logout
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="avatar"></div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 0.9rem;">{{ user.name }}</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header animate-fade">
+                <div>
+                    <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Proximity Radar</h2>
+                    <p style="color: var(--text-dim);">Live data from HC-SR04 Ultrasonic Sensor</p>
+                </div>
+
+                <!-- Live indicator + timestamp (NEW) -->
+                <div class="glass-card" style="padding: 12px 24px; border-radius: 100px; display: flex; align-items: center; gap: 1rem;">
+                    <div id="live-dot" style="width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 8px var(--success); transition: background 0.4s;"></div>
+                    <span id="last-updated" style="font-size: 0.8rem; color: var(--text-muted);">Connecting...</span>
+                </div>
+            </header>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <!-- Live Reading Card -->
+                <div class="glass-card animate-fade">
+                    <div class="card-header">
+                        <div class="card-icon">📡</div>
+                        <div id="distance-status" class="status-badge"
+                             style="color: var(--success); font-weight: 700; font-size: 0.8rem;">
+                            CONNECTING
+                        </div>
+                    </div>
+
+                    <!-- Distance value — updated by JS (NEW) -->
+                    <div class="card-value" style="font-size: 4rem;">
+                        <span id="distance-val">—</span>
+                        <span style="font-size: 2rem; color: var(--text-muted);">cm</span>
+                    </div>
+
+                    <!-- Progress bar — mapped 0–400 cm (NEW) -->
+                    <div class="progress-container" style="height: 12px;">
+                        <div id="distance-bar" class="progress-bar" style="width: 0%;"></div>
+                    </div>
+
+                    <p style="margin-top: 1.5rem; color: var(--text-dim);">
+                        Real-time distance measurement to nearest object.
+                    </p>
+
+                    <!-- Timestamp row (NEW) -->
+                    <div style="margin-top: 1rem; padding-top: 1rem;
+                                border-top: 1px solid var(--border-glass);
+                                display: flex; justify-content: space-between;
+                                align-items: center; font-size: 0.8rem; color: var(--text-muted);">
+                        <span>Last reading</span>
+                        <span id="reading-timestamp">—</span>
+                    </div>
+                </div>
+
+                <!-- Sensor Info Card (unchanged) -->
+                <div class="glass-card animate-fade" style="animation-delay: 0.1s;">
+                    <h3 style="margin-bottom: 1.5rem;">Ultrasonic Echo</h3>
+                    <p style="color: var(--text-dim); line-height: 1.8; margin-bottom: 1rem;">
+                        The <strong>HC-SR04</strong> sensor uses sonar to determine the distance to an
+                        object, similar to how bats or dolphins use echolocation.
+                    </p>
+                    <ul style="list-style: none; color: var(--text-dim); line-height: 2;">
+                        <li>✅ Range: 2 cm – 400 cm</li>
+                        <li>✅ Accuracy: ±3 mm</li>
+                        <li>✅ Operating Angle: &lt; 15°</li>
+                        <li>✅ Resolution: 1 cm</li>
+                    </ul>
+
+                    <!-- Alert zones legend (NEW) -->
+                    <div style="margin-top: 1.5rem; padding-top: 1rem;
+                                border-top: 1px solid var(--border-glass);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted);
+                                    text-transform: uppercase; letter-spacing: 1px;
+                                    margin-bottom: 0.75rem;">
+                            Buzzer Alert Zones
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="width: 10px; height: 10px; border-radius: 50%;
+                                             background: var(--success); flex-shrink: 0;"></span>
+                                <span style="color: var(--text-dim);">&gt; 20 cm — Silent</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="width: 10px; height: 10px; border-radius: 50%;
+                                             background: var(--warning); flex-shrink: 0;"></span>
+                                <span style="color: var(--text-dim);">≤ 20 cm — Slow beep</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span style="width: 10px; height: 10px; border-radius: 50%;
+                                             background: var(--danger); flex-shrink: 0;"></span>
+                                <span style="color: var(--text-dim);">≤ 5 cm — Rapid beep</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Radar Visualization (enhanced — preserves original layout) -->
+            <div class="glass-card animate-fade"
+                 style="margin-top: 1.5rem; animation-delay: 0.2s; height: 300px;
+                        display: flex; flex-direction: column;
+                        align-items: center; justify-content: center;
+                        border: 1px dashed var(--border-glass);">
+
+                <!-- Zone labels (NEW) -->
+                <div style="width: 80%; display: flex; justify-content: space-between;
+                            font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                    <span>0 cm</span>
+                    <span style="color: var(--danger);">5</span>
+                    <span style="color: var(--warning);">20</span>
+                    <span>400 cm</span>
+                </div>
+
+                <!-- Bar track (original + enhanced colouring NEW) -->
+                <div style="width: 80%; height: 16px; background: rgba(255,255,255,0.05);
+                            border-radius: 100px; overflow: hidden; position: relative;">
+                    <div id="distance-viz"
+                         style="position: absolute; left: 0; top: 0; height: 100%; width: 0%;
+                                background: var(--primary);
+                                box-shadow: 0 0 20px var(--primary-glow);
+                                transition: width 0.6s ease, background 0.4s ease;">
+                    </div>
+                </div>
+
+                <p style="color: var(--text-muted); margin-top: 2rem;">Radar Visualization Active</p>
+
+                <!-- Numeric echo readout (NEW) -->
+                <p style="color: var(--text-dim); font-size: 1.4rem;
+                           font-family: 'JetBrains Mono', monospace; margin-top: 0.5rem;">
+                    <span id="viz-label">— cm</span>
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- ══════════════════════════════════════════════════════
+         ULTRASONIC LIVE POLLING  (NEW — no page reload)
+         Polls /api/sensor/ultrasonic/latest every 2.5 seconds.
+         All DOM ids match the existing HTML above.
+    ═══════════════════════════════════════════════════════════ -->
+    <script>
+    (function () {
+        'use strict';
+
+        // ── DOM refs ──────────────────────────────────────────
+        const valEl       = document.getElementById('distance-val');
+        const barEl       = document.getElementById('distance-bar');
+        const vizEl       = document.getElementById('distance-viz');
+        const statusEl    = document.getElementById('distance-status');
+        const tsEl        = document.getElementById('reading-timestamp');
+        const updatedEl   = document.getElementById('last-updated');
+        const liveDot     = document.getElementById('live-dot');
+        const vizLabel    = document.getElementById('viz-label');
+
+        // ── Thresholds (mirror Arduino constants) ─────────────
+        const THRESH_RAPID = 5;    // cm
+        const THRESH_SLOW  = 20;   // cm
+        const MAX_RANGE    = 400;  // cm (HC-SR04 max)
+
+        // ── Colour helpers ────────────────────────────────────
+        function getZoneColor(distance) {
+            if (distance <= THRESH_RAPID) return 'var(--danger)';
+            if (distance <= THRESH_SLOW)  return 'var(--warning)';
+            return 'var(--primary)';
+        }
+
+        function getStatusText(distance) {
+            if (distance <= THRESH_RAPID) return 'CRITICAL';
+            if (distance <= THRESH_SLOW)  return 'CAUTION';
+            return 'NORMAL';
+        }
+
+        function getStatusColor(distance) {
+            if (distance <= THRESH_RAPID) return 'var(--danger)';
+            if (distance <= THRESH_SLOW)  return 'var(--warning)';
+            return 'var(--success)';
+        }
+
+        // ── Update UI ─────────────────────────────────────────
+        function updateUI(data) {
+            const distance = parseFloat(data.distance_cm) || 0;
+            const pct      = Math.min(100, (distance / MAX_RANGE) * 100).toFixed(1);
+            const color    = getZoneColor(distance);
+
+            // Value display
+            valEl.textContent    = distance.toFixed(1);
+            vizLabel.textContent = distance.toFixed(1) + ' cm';
+
+            // Progress bars
+            barEl.style.width       = pct + '%';
+            barEl.style.background  = `linear-gradient(90deg, ${color}, var(--secondary))`;
+            vizEl.style.width       = pct + '%';
+            vizEl.style.background  = color;
+            vizEl.style.boxShadow   = `0 0 20px ${color}`;
+
+            // Status badge
+            statusEl.textContent   = getStatusText(distance);
+            statusEl.style.color   = getStatusColor(distance);
+
+            // Timestamps
+            const ts = data.timestamp
+                ? new Date(data.timestamp).toLocaleTimeString()
+                : '—';
+            tsEl.textContent      = ts;
+            updatedEl.textContent = 'Updated ' + ts;
+
+            // Live dot — flash green on each update
+            liveDot.style.background  = 'var(--success)';
+            liveDot.style.boxShadow   = '0 0 10px var(--success)';
+        }
+
+        function setOffline(message) {
+            statusEl.textContent   = 'OFFLINE';
+            statusEl.style.color   = 'var(--danger)';
+            updatedEl.textContent  = message || 'No data';
+            liveDot.style.background  = 'var(--danger)';
+            liveDot.style.boxShadow   = '0 0 8px var(--danger)';
+        }
+
+        // ── Fetch from Flask API ──────────────────────────────
+        async function fetchLatest() {
+            try {
+                const resp = await fetch('/api/sensor/ultrasonic/latest', {
+                    method : 'GET',
+                    headers: { 'Accept': 'application/json' },
+                    cache: 'no-cache',
+                });
+
+                if (!resp.ok) {
+                    setOffline('API error ' + resp.status);
+                    return;
+                }
+
+                const json = await resp.json();
+
+                if (json.status === 'ok' || json.status === 'no_data') {
+                    updateUI(json.data);
+                } else {
+                    setOffline('Server error');
+                }
+
+            } catch (err) {
+                console.error('[SMSAM] Fetch error:', err);
+                setOffline('Cannot reach server');
+            }
+        }
+
+        // ── Bootstrap ─────────────────────────────────────────
+        fetchLatest();                          // immediate first call
+        setInterval(fetchLatest, 2500);         // then every 2.5 s
+
+    })();
+    </script>
+</body>
+</html>

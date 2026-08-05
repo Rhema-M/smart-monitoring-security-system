@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMSAM | Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card animate-fade">
+            <div class="auth-header">
+                <div class="brand" style="justify-content: center; margin-bottom: 1rem;">
+                    <h1 class="brand-name">SMSAM</h1>
+                </div>
+                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Create Account</h2>
+                <p style="color: var(--text-dim);">Register your system to get started</p>
+            </div>
+
+            <form method="POST">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" name="name" class="form-input" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-input" placeholder="admin@smsam.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Account Role</label>
+                    <select name="role" class="form-input">
+                        <option value="user">User</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Sensor Access</label>
+                    <div class="permissions-grid">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="permissions" value="temperature" checked> Temperature
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="permissions" value="humidity" checked> Humidity
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="permissions" value="motion"> Motion Security
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="permissions" value="distance"> Proximity Radar
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="permissions" value="camera"> Live Camera
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="permissions" value="ldr" checked> Light Intensity (LDR)
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="{{ url_for('login') }}">Sign In</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

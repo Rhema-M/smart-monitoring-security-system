@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMSAM | Command Center</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="brand">
+                <h1 class="brand-name">SMSAM</h1>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('index') }}" class="nav-link active">
+                        <span>🏠</span> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('about') }}" class="nav-link">
+                        <span>ℹ️</span> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('analytics') }}" class="nav-link">
+                        <span>📊</span> Analytics
+                    </a>
+                </li>
+                {% if 'camera' in permissions %}
+                <li class="nav-item">
+                    <a href="{{ url_for('camera') }}" class="nav-link">
+                        <span>📷</span> Live Cam
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a href="{{ url_for('logout') }}" class="nav-link">
+                        <span>🚪</span> Logout
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile">
+                <div class="avatar"></div>
+                <div class="user-info">
+                    <div style="font-weight: 600; font-size: 0.9rem;">{{ user.name }}</div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header animate-fade">
+                <div>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Command Center</h2>
+                    <p style="color: var(--text-dim);">System Status: <span style="color: var(--success); font-weight: 600;">ACTIVE & SECURE</span></p>
+                </div>
+                <div class="glass-card" style="padding: 12px 24px; border-radius: 100px; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px var(--success);"></div>
+                    <span id="live-clock">--:--:--</span>
+                </div>
+            </header>
+
+            <!-- Navigation Hub -->
+            <div style="margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">Active Modules</h3>
+                <div class="dashboard-grid">
+                    <!-- Temp Module -->
+                    {% if 'temperature' in permissions %}
+                    <a href="{{ url_for('temperature') }}" style="text-decoration: none; color: inherit;">
+                        <div class="glass-card animate-fade" style="text-align: center; padding: 2.5rem 1.5rem; animation-delay: 0.1s;">
+                            <div class="card-icon" style="margin: 0 auto 1.5rem auto; width: 60px; height: 60px; font-size: 2rem; background: rgba(6, 182, 212, 0.1);">🌡️</div>
+                            <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Temperature</h4>
+                            <p style="color: var(--text-dim); font-size: 0.85rem;">Environmental Heat Tracking</p>
+                            <div style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--primary); font-weight: 700;">OPEN MODULE →</div>
+                        </div>
+                    </a>
+                    {% endif %}
+
+                    <!-- Humidity Module -->
+                    {% if 'humidity' in permissions %}
+                    <a href="{{ url_for('humidity') }}" style="text-decoration: none; color: inherit;">
+                        <div class="glass-card animate-fade" style="text-align: center; padding: 2.5rem 1.5rem; animation-delay: 0.2s;">
+                            <div class="card-icon" style="margin: 0 auto 1.5rem auto; width: 60px; height: 60px; font-size: 2rem; background: rgba(59, 130, 246, 0.1);">💧</div>
+                            <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Humidity</h4>
+                            <p style="color: var(--text-dim); font-size: 0.85rem;">Atmospheric Moisture Data</p>
+                            <div style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--primary); font-weight: 700;">OPEN MODULE →</div>
+                        </div>
+                    </a>
+                    {% endif %}
+
+                    <!-- Motion Module -->
+                    {% if 'motion' in permissions %}
+                    <a href="{{ url_for('motion') }}" style="text-decoration: none; color: inherit;">
+                        <div class="glass-card animate-fade" style="text-align: center; padding: 2.5rem 1.5rem; animation-delay: 0.3s;">
+                            <div class="card-icon" style="margin: 0 auto 1.5rem auto; width: 60px; height: 60px; font-size: 2rem; background: rgba(239, 68, 68, 0.1);">🚨</div>
+                            <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Security</h4>
+                            <p style="color: var(--text-dim); font-size: 0.85rem;">PIR Motion Surveillance</p>
+                            <div style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--primary); font-weight: 700;">OPEN MODULE →</div>
+                        </div>
+                    </a>
+                    {% endif %}
+
+                    <!-- Radar Module -->
+                    {% if 'distance' in permissions %}
+                    <a href="{{ url_for('distance') }}" style="text-decoration: none; color: inherit;">
+                        <div class="glass-card animate-fade" style="text-align: center; padding: 2.5rem 1.5rem; animation-delay: 0.4s;">
+                            <div class="card-icon" style="margin: 0 auto 1.5rem auto; width: 60px; height: 60px; font-size: 2rem; background: rgba(16, 185, 129, 0.1);">📡</div>
+                            <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Proximity</h4>
+                            <p style="color: var(--text-dim); font-size: 0.85rem;">Ultrasonic Distance Radar</p>
+                            <div style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--primary); font-weight: 700;">OPEN MODULE →</div>
+                        </div>
+                    </a>
+                    {% endif %}
+
+                    <!-- LDR Module -->
+                    {% if 'ldr' in permissions %}
+                    <a href="{{ url_for('ldr') }}" style="text-decoration: none; color: inherit;">
+                        <div class="glass-card animate-fade" style="text-align: center; padding: 2.5rem 1.5rem; animation-delay: 0.5s;">
+                            <div class="card-icon" style="margin: 0 auto 1.5rem auto; width: 60px; height: 60px; font-size: 2rem; background: rgba(251, 191, 36, 0.1);">☀️</div>
+                            <h4 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Light Level</h4>
+                            <p style="color: var(--text-dim); font-size: 0.85rem;">Ambient Light Intensity</p>
+                            <div style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--primary); font-weight: 700;">OPEN MODULE →</div>
+                        </div>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Overview Section -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <!-- Activity Feed -->
+                <div class="glass-card animate-fade" style="animation-delay: 0.5s;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1rem;">System Activity</h3>
+                        <span id="log-badge" style="font-size: 0.7rem; color: var(--text-muted); display:flex; align-items:center; gap:6px;">
+                            <span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 6px #22c55e;"></span>
+                            LIVE LOG
+                        </span>
+                    </div>
+                    <div id="alert-list" style="display: flex; flex-direction: column; gap: 0.6rem; max-height: 340px; overflow-y: auto;">
+                        <p id="log-empty" style="color: var(--text-muted); font-size: 0.82rem; text-align:center; padding: 2rem 0;">Waiting for sensor data…</p>
+                    </div>
+                </div>
+
+                <!-- Live Feed Preview -->
+                {% if 'camera' in permissions %}
+                <a href="{{ url_for('camera') }}" style="text-decoration: none; color: inherit;">
+                    <div class="glass-card animate-fade" style="padding: 0; overflow: hidden; position: relative; height: 100%; min-height: 250px; animation-delay: 0.6s;">
+                        <div style="width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">📹</div>
+                            <p style="color: var(--text-muted); font-size: 0.8rem;">Tap to expand Live Stream</p>
+                        </div>
+                        <div style="position: absolute; top: 1rem; right: 1rem; padding: 4px 12px; background: rgba(239, 68, 68, 0.8); border-radius: 4px; font-size: 0.6rem; font-weight: 800; color: white;">LIVE</div>
+                    </div>
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="glass-card animate-fade" style="margin-top: 1.5rem; display: flex; justify-content: space-around; padding: 1.5rem; animation-delay: 0.7s;">
+                <div style="text-align: center;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">System Uptime</div>
+                    <div id="uptime-counter" style="font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--primary);">00:00:00</div>
+                </div>
+                <div style="width: 1px; background: var(--border-glass);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Network Status</div>
+                    <div style="font-weight: 700; color: var(--success);">STABLE (98ms)</div>
+                </div>
+                <div style="width: 1px; background: var(--border-glass);"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">CPU Load</div>
+                    <div style="font-weight: 700; color: var(--text-main);">12.4%</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // ── Live Log Poller ──────────────────────────────────────────
+        const TYPE_COLORS = {
+            dht22:      { bg: 'rgba(6,182,212,0.15)',  text: '#06b6d4' },
+            pir:        { bg: 'rgba(239,68,68,0.15)',  text: '#ef4444' },
+            ultrasonic: { bg: 'rgba(16,185,129,0.15)', text: '#10b981' },
+            ldr:        { bg: 'rgba(251,191,36,0.15)', text: '#fbbf24' },
+        };
+
+        async function fetchLogs() {
+            try {
+                const res  = await fetch('/api/logs');
+                const data = await res.json();
+                if (data.status !== 'ok') return;
+
+                const list  = document.getElementById('alert-list');
+                const empty = document.getElementById('log-empty');
+
+                if (!data.logs || data.logs.length === 0) {
+                    if (empty) empty.style.display = 'block';
+                    return;
+                }
+                if (empty) empty.style.display = 'none';
+
+                // Rebuild only when content has actually changed
+                const newHTML = data.logs.map(log => {
+                    const c = TYPE_COLORS[log.type] || { bg: 'rgba(255,255,255,0.08)', text: '#e2e8f0' };
+                    return `
+                    <div style="
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        background: ${c.bg};
+                        border-left: 3px solid ${c.text};
+                        border-radius: 6px;
+                        padding: 8px 12px;
+                        font-size: 0.8rem;
+                        color: var(--text-main);
+                    ">
+                        <span style="font-size:1.1rem;">${log.icon}</span>
+                        <span style="flex:1;">${log.message}</span>
+                        <span style="color:${c.text}; font-family:'JetBrains Mono',monospace; font-size:0.72rem; white-space:nowrap;">${log.timestamp}</span>
+                    </div>`;
+                }).join('');
+
+                if (list.innerHTML !== newHTML) list.innerHTML = newHTML;
+            } catch(e) {
+                console.warn('Log fetch failed', e);
+            }
+        }
+
+        fetchLogs();
+        setInterval(fetchLogs, 5000);
+    </script>
+</body>
+</html>

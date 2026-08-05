@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SMSAM | Live Camera</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, hsl(210, 30%, 10%), hsl(210, 30%, 5%));
+            font-family: 'Inter', sans-serif;
+            color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .camera-container {
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            max-width: 90vw;
+            width: 800px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .camera-feed {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #3182ce;
+            color: white;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #2b6cb0;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #90cdf4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a.back-link:hover {
+            color: #bee3f8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="camera-container">
+
+        <h2>Live Camera Feed</h2>
+
+        <button onclick="startStream()">Start Stream</button>
+
+        <br><br>
+
+        <img id="cam" class="camera-feed" />
+
+        <br>
+
+        <a class="back-link" href="{{ url_for('index') }}">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+    <script>
+        function startStream() {
+            const cam = document.getElementById("cam");
+
+            cam.style.display = "block";
+
+            // Force fresh connection to ESP32 stream
+            cam.src = "http://10.24.41.50:81/stream?ts=" + Date.now();
+        }
+    </script>
+
+</body>
+
+</html>
