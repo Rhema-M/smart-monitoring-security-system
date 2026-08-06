@@ -135,7 +135,31 @@ The project demonstrates the integration of embedded systems, networking, backen
 
 # 🏗 System Architecture
 
-<img width="601" height="413" alt="image" src="https://github.com/user-attachments/assets/947e42c9-a97a-4e7f-8c76-5d2f6a179a18" />
+```text
+                ┌──────────────────────────┐
+                │        ESP32 Board       │
+                └────────────┬─────────────┘
+                             │
+      ┌───────────┬──────────┼──────────┬───────────┐
+      │           │          │          │           │
+    DHT22       PIR        HC-SR04     LDR     ESP32-CAM
+      │           │          │          │           │
+      └───────────┴──────────┴──────────┴───────────┘
+                             │
+                    HTTP (JSON Requests)
+                             │
+                             ▼
+                    Flask REST API Server
+                             │
+                             ▼
+                     MySQL Database
+                             │
+                             ▼
+                  Analytics Processing
+                             │
+                             ▼
+                    Web Dashboard
+```
 
 ```
 
