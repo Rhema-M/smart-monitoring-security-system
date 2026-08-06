@@ -164,8 +164,6 @@ The project demonstrates the integration of embedded systems, networking, backen
 
 **Architecture Diagram Placeholder**
 
-*(Replace this section with the final professionally designed system architecture diagram.)*
-
 ---
 
 # 📂 Project Structure
@@ -191,7 +189,6 @@ smart-monitoring-security-system/
 │   ├── smsam_pir/
 │   └── smsam_ultrasonic/
 │
-├── .gitignore
 ├── LICENSE
 └── README.md
 ```
@@ -210,8 +207,6 @@ smart-monitoring-security-system/
 8. Users monitor the system through the web interface.
 
 **Workflow Diagram Placeholder**
-
-*(Replace this section with the final workflow or data-flow diagram.)*
 
 ---
 
@@ -288,85 +283,13 @@ database/smam_database.sql
 
 ## Database Tables
 
-**Screenshot Placeholder**
+<img width="1972" height="1118" alt="Screenshot 2026-08-06 152606" src="https://github.com/user-attachments/assets/5f17a5c2-d2aa-4bb7-9e77-b05b119064f3" />
 
 ---
 
 ## ESP32-CAM
 
 **Screenshot Placeholder**
-
----
-
-# 🚀 Getting Started
-
-## Prerequisites
-
-- Python 3.x
-- MySQL Server
-- Arduino IDE
-- ESP32 Board Package
-- Git
-
----
-
-## Clone the Repository
-
-```bash
-git clone https://github.com/<username>/smart-monitoring-security-system.git
-```
-
----
-
-## Navigate to the Project
-
-```bash
-cd smart-monitoring-security-system
-```
-
----
-
-## Install Dependencies
-
-```bash
-pip install -r backend/requirements.txt
-```
-
----
-
-## Configure the Database
-
-- Create a MySQL database.
-- Import the provided SQL schema.
-- Update the database configuration in:
-
-```text
-backend/app.py
-```
-
----
-
-## Upload the Firmware
-
-Upload the appropriate firmware sketch to each ESP32 device using the Arduino IDE.
-
-Available firmware includes:
-
-- CameraWebServer
-- smsam_dht22
-- smsam_ldr
-- smsam_pir
-- smsam_ultrasonic
-
----
-
-## Run the Backend
-
-```bash
-cd backend
-
-python app.py
-```
 
 ---
 
@@ -405,13 +328,12 @@ This project provided practical experience in:
 
 This project was developed collaboratively as part of an engineering team.
 
-| Team Member | Contribution |
-|-------------|--------------|
-| Rhema Miller | Backend Development, Database Integration, Analytics, Documentation |
-| Loel | ESP32-CAM Development |
-| Karabelo | Sensor Integration |
-| Lebo | Sensor Integration |
-| Revonia | System Testing and Documentation |
+Team Member 
+| Rhema Miller 
+| Doctor Mkhonza  
+| Karabelo Motaung 
+| Moleboge Setjie 
+| Thifhindulwi Tuwane 
 
 ---
 
@@ -436,11 +358,3 @@ See the **LICENSE** file for more information.
 If you have any questions about this project, suggestions for improvement, or would like to collaborate, feel free to connect with me through GitHub.
 
 Feedback and constructive suggestions are always appreciated.
-
----
-
-## ⭐ Support
-
-If you found this project useful or interesting, consider giving the repository a ⭐.
-
-Your support helps others discover the project and is greatly appreciated.
