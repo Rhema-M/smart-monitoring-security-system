@@ -30,7 +30,6 @@ A full-stack Internet of Things (IoT) monitoring platform that integrates ESP32 
 - [REST API](#-rest-api)
 - [Database](#-database)
 - [Screenshots](#-screenshots)
-- [Getting Started](#-getting-started)
 - [Key Learning Outcomes](#-key-learning-outcomes)
 - [Future Improvements](#-future-improvements)
 - [Project Team](#-project-team)
@@ -329,11 +328,11 @@ This project provided practical experience in:
 This project was developed collaboratively as part of an engineering team.
 
 Team Member 
-| Rhema Miller 
-| Doctor Mkhonza  
-| Karabelo Motaung 
-| Moleboge Setjie 
-| Thifhindulwi Tuwane 
+| Rhema Miller |
+| Doctor Mkhonza | 
+| Karabelo Motaung |
+| Moleboge Setjie |
+| Thifhindulwi Tuwane |
 
 ---
 
