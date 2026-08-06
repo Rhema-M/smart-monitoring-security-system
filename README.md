@@ -257,41 +257,36 @@ database/smam_database.sql
 
 ## Login Page
 
-**Screenshot Placeholder**
+<img width="1676" height="926" alt="Screenshot 2026-08-06 151434" src="https://github.com/user-attachments/assets/2ed4f78d-f497-4667-9861-fe3a688d267d" />
 
 ---
 
 ## Dashboard
 
-**Screenshot Placeholder**
+<img width="1660" height="926" alt="Screenshot 2026-08-06 151542" src="https://github.com/user-attachments/assets/48ac4469-4506-4af9-8e90-dcb5499b5627" />
 
 ---
 
 ## Temperature & Humidity Monitoring
 
-**Screenshot Placeholder**
+<img width="1664" height="926" alt="Screenshot 2026-08-06 151606" src="https://github.com/user-attachments/assets/6e1b763e-f5ca-438b-9ee6-5a20245240df" />
+<img width="1664" height="928" alt="Screenshot 2026-08-06 151755" src="https://github.com/user-attachments/assets/f14bb63b-dfb0-4ce6-ac22-eee53ece93d6" />
 
 ---
 
 ## Motion Detection
 
-**Screenshot Placeholder**
+<img width="1662" height="926" alt="Screenshot 2026-08-06 151807" src="https://github.com/user-attachments/assets/315878a8-ae33-4b5a-b9d0-38e558fb964a" />
 
 ---
 
 ## Analytics Dashboard
 
-**Screenshot Placeholder**
+<img width="1666" height="928" alt="Screenshot 2026-08-06 151919" src="https://github.com/user-attachments/assets/c477e78c-ae3f-45e1-a2d5-7702d30722ab" />
 
 ---
 
 ## Database Tables
-
-**Screenshot Placeholder**
-
----
-
-## ESP32 Hardware Setup
 
 **Screenshot Placeholder**
 
