@@ -327,12 +327,13 @@ This project provided practical experience in:
 
 This project was developed collaboratively as part of an engineering team.
 
-Team Member 
-| Rhema Miller |
-| Doctor Mkhonza | 
-| Karabelo Motaung |
-| Moleboge Setjie |
-| Thifhindulwi Tuwane |
+|Team Member |
+|-----------------|
+| Rhema Miller 
+| Doctor Mkhonza 
+| Karabelo Motaung 
+| Moleboge Setjie 
+| Thifhindulwi Tuwane
 
 ---
 
