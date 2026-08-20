@@ -1,4 +1,4 @@
-# 🛡️ Smart Monitoring and Security System
+#  Smart Monitoring and Security System
 
 > **Project Banner Placeholder**
 >
@@ -16,7 +16,7 @@ A full-stack Internet of Things (IoT) monitoring platform that integrates ESP32 
 
 ---
 
-# 📑 Table of Contents
+#  Table of Contents
 
 - [Repository Highlights](#-repository-highlights)
 - [Overview](#-overview)
@@ -39,7 +39,7 @@ A full-stack Internet of Things (IoT) monitoring platform that integrates ESP32 
 
 ---
 
-# 🚀 Repository Highlights
+#  Repository Highlights
 
 - Complete IoT monitoring and security solution
 - Full-stack architecture integrating embedded systems and web technologies
@@ -54,7 +54,7 @@ A full-stack Internet of Things (IoT) monitoring platform that integrates ESP32 
 
 ---
 
-# 📖 Overview
+#  Overview
 
 The **Smart Monitoring and Security System (SMSAM)** is a comprehensive IoT solution designed to monitor environmental conditions and detect security events in real time.
 
@@ -64,24 +64,24 @@ The project demonstrates the integration of embedded systems, networking, backen
 
 ---
 
-# ✨ Features
+#  Features
 
-- 🔐 Secure user authentication
-- 📡 Real-time sensor monitoring
-- 🌡 Temperature monitoring
-- 💧 Humidity monitoring
-- 💡 Ambient light detection
-- 🚶 Motion detection
-- 📏 Distance measurement
-- 📷 ESP32-CAM integration
-- 📊 Analytics dashboard with automatically generated graphs
-- 💾 Persistent MySQL database storage
-- 🌐 REST API communication using JSON
-- 📱 Responsive web interface
+-  Secure user authentication
+-  Real-time sensor monitoring
+-  Temperature monitoring
+-  Humidity monitoring
+-  Ambient light detection
+-  Motion detection
+-  Distance measurement
+-  ESP32-CAM integration
+-  Analytics dashboard with automatically generated graphs
+-  Persistent MySQL database storage
+-  REST API communication using JSON
+-  Responsive web interface
 
 ---
 
-# 🛠 Hardware Components
+#  Hardware Components
 
 | Component | Purpose |
 |------------|---------|
@@ -97,7 +97,7 @@ The project demonstrates the integration of embedded systems, networking, backen
 
 ---
 
-# 💻 Software Stack
+#  Software Stack
 
 | Category | Technologies |
 |----------|--------------|
@@ -112,7 +112,7 @@ The project demonstrates the integration of embedded systems, networking, backen
 
 ---
 
-# ⚙ Built With
+#  Built With
 
 - Python
 - Flask
@@ -133,7 +133,7 @@ The project demonstrates the integration of embedded systems, networking, backen
 
 ---
 
-# 🏗 System Architecture
+#  System Architecture
 
 ```text
                 ┌──────────────────────────┐
@@ -163,7 +163,7 @@ The project demonstrates the integration of embedded systems, networking, backen
 
 ```
 
-# 📂 Project Structure
+#  Project Structure
 
 ```text
 smart-monitoring-security-system/
@@ -192,7 +192,7 @@ smart-monitoring-security-system/
 
 ---
 
-# 📡 System Workflow
+#  System Workflow
 
 1. Sensors collect environmental and security data.
 2. ESP32 microcontrollers process the sensor readings.
@@ -207,7 +207,7 @@ smart-monitoring-security-system/
 
 ---
 
-# 🌐 REST API
+#  REST API
 
 The Flask backend exposes REST endpoints for communication between the embedded hardware and the web application.
 
@@ -224,7 +224,7 @@ The API supports:
 
 ---
 
-# 🗄 Database
+#  Database
 
 The MySQL database stores:
 
@@ -245,7 +245,7 @@ database/smam_database.sql
 
 ---
 
-# 📸 Screenshots
+#  Screenshots
 
 ## Login Page
 
@@ -290,7 +290,7 @@ database/smam_database.sql
 
 ---
 
-# 🎯 Key Learning Outcomes
+#  Key Learning Outcomes
 
 This project provided practical experience in:
 
@@ -308,7 +308,7 @@ This project provided practical experience in:
 
 ---
 
-# 🔮 Future Improvements
+#  Future Improvements
 
 - Mobile application support
 - MQTT communication
@@ -321,7 +321,7 @@ This project provided practical experience in:
 
 ---
 
-# 👥 Project Team
+#  Project Team
 
 This project was developed collaboratively as part of an engineering team.
 
@@ -335,7 +335,7 @@ This project was developed collaboratively as part of an engineering team.
 
 ---
 
-# 🤝 Contributing
+#  Contributing
 
 This project was developed as an academic engineering project and is presented as a portfolio showcase.
 
@@ -343,7 +343,7 @@ Suggestions, improvements, and constructive feedback are always welcome. Feel fr
 
 ---
 
-# 📄 License
+#  License
 
 This project is licensed under the MIT License.
 
@@ -351,7 +351,7 @@ See the **LICENSE** file for more information.
 
 ---
 
-# 📬 Contact
+#  Contact
 
 If you have any questions about this project, suggestions for improvement, or would like to collaborate, feel free to connect with me through GitHub.
 
