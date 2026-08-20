@@ -113,19 +113,13 @@ The project demonstrates the integration of embedded systems, networking, backen
 
 - Python
 - Flask
-- SQLAlchemy
 - MySQL
-- HTML5
-- CSS3
+- HTML
+- CSS
 - JavaScript
 - ESP32
 - ESP32-CAM
 - Arduino IDE
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Git
 - GitHub
 
 ---
@@ -155,7 +149,7 @@ The project demonstrates the integration of embedded systems, networking, backen
                   Analytics Processing
                              │
                              ▼
-                    Web Dashboard
+                       Web Dashboard
 ```
 
 ```
