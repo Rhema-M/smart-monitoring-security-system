@@ -1,8 +1,5 @@
 #  Smart Monitoring and Security System
 
-> **Project Banner Placeholder**
->
-> *(Insert project banner image here.)*
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
 ![Flask](https://img.shields.io/badge/Flask-Web%20Framework-black?logo=flask)
