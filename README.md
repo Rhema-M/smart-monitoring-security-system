@@ -200,7 +200,6 @@ smart-monitoring-security-system/
 7. The analytics engine generates reports and visualizations.
 8. Users monitor the system through the web interface.
 
-**Workflow Diagram Placeholder**
 
 ---
 
@@ -283,7 +282,7 @@ database/smam_database.sql
 
 ## ESP32-CAM
 
-**Screenshot Placeholder**
+**Screenshot**
 
 ---
 
